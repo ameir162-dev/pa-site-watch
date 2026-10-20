@@ -3,6 +3,11 @@ on:
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
+    inputs:
+      test_message:
+        description: Send a test message instead of checking
+        type: boolean
+        default: false
 concurrency:
   group: site-watch
   cancel-in-progress: false
@@ -22,6 +27,7 @@ jobs:
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT: ${{ secrets.TG_CHAT }}
+          TEST_MESSAGE: ${{ inputs.test_message }}
         run: python3 watch.py
       - name: Save status
         if: always()

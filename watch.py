@@ -53,6 +53,11 @@ def telegram(text):
 
 
 def main():
+    if os.environ.get("TEST_MESSAGE") == "true":
+        up, notes = check()
+        telegram(f"TEST (cloud check): the cloud down-alert can reach you. {HOST} is "
+                 + ("up." if up else "NOT answering right now.") + " No action needed.")
+        return
     prev = open(STATE).read().strip() if os.path.exists(STATE) else "up"
     up, notes = check()
     if not up:
